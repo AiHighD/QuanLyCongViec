@@ -1,0 +1,94 @@
+@model PaginatedList<DocAndImageViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="mb-4">Document and Image</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary btn-sm">
+        <i class="fas fa-plus"></i> Create New
+    </a>
+</p>
+
+<!-- Filter and Search Form -->
+<form asp-action="Index" class="mb-4">
+    <div class="card shadow p-4">
+        <div class="row g-3 align-items-center">
+            <!-- Search Box -->
+            <div class="col-md-6">
+                <input id="searchBox" class="form-control" placeholder="Search..." value="@ViewData["CurrentFilter"]"
+                    type="text" autocomplete="off" name="SearchString" />
+            </div>
+            <!-- Task Filter Dropdown -->
+            <div class="col-md-4">
+                <select id="taskFilter" name="courseId" class="form-select" asp-items="ViewBag.CourseId">
+                    <option value="">-- Select Task --</option>
+                </select>
+            </div>
+            <!-- Submit Button -->
+            <div class="col-md-2 d-grid">
+                <label class="form-label d-none">Filter</label>
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Table for Displaying Data -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]"
+                    asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-light btn-sm">
+                    @Html.DisplayNameFor(model => model[0].Name)
+                </a>
+            </th>
+            <th>@Html.DisplayNameFor(model => model[0].Documents)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-center">
+                    @if (!string.IsNullOrEmpty(item.Images))
+                    {
+                        <img width="160" height="90" style="object-fit: cover;" src="@item.Images" alt="Image for @item.Name" />
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Documents)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    
+</table>
+
+<!-- Pagination Buttons -->
+<div class="d-flex justify-content-between mt-4">
+    <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-pageNumber="@(Model.PageIndex - 1)"
+        asp-route-currentFilter="@ViewData["CurrentFilter"]"
+        class="btn btn-outline-secondary @(!Model.HasPreviousPage ? "disabled" : "")">
+        Previous
+    </a>
+    <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-pageNumber="@(Model.PageIndex + 1)"
+        asp-route-currentFilter="@ViewData["CurrentFilter"]"
+        class="btn btn-outline-secondary @(!Model.HasNextPage ? "disabled" : "")">
+        Next
+    </a>
+</div>

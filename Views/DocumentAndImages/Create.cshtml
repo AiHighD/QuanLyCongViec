@@ -1,0 +1,99 @@
+@model CourseManagement.ViewModels.DocAndImageRequest
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container mt-5">
+    <!-- Card Wrapper -->
+    <div class="card shadow-lg">
+        <div class="card-header bg text text-center">
+            <h4 class="mb-0">Create New Document</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <!-- Name Field -->
+                <div class="form-group mb-3">
+                    <label asp-for="Name" class="control-label font-weight-bold"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Enter document name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <!-- Documents Field -->
+                <div class="form-group mb-3">
+                    <label asp-for="Documents" class="control-label font-weight-bold"></label>
+                    <textarea asp-for="Documents" class="form-control" rows="4"
+                        placeholder="Provide details about the document"></textarea>
+                    <span asp-validation-for="Documents" class="text-danger"></span>
+                </div>
+
+                <!-- Image Upload Field -->
+                <div class="form-group mb-3">
+                    <label asp-for="Image" class="control-label font-weight-bold"></label>
+                    <div class="custom-file">
+                        <input asp-for="Image" type="file" class="custom-file-input" id="image-input"
+                            onchange="previewImage(event)" accept="image/*" />
+                        <label class="custom-file-label" for="image-input">Choose image...</label>
+                    </div>
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+
+                <!-- Image Preview -->
+                <div class="text-center my-3">
+                    <img id="preview" class="img-fluid d-none rounded" src="#" alt="Image Preview"
+                        style="max-height: 200px;" />
+                </div>
+
+                <!-- Task Field -->
+                <div class="form-group mb-3">
+                    <label class="control-label font-weight-bold">Task</label>
+                    <select asp-for="CourseId" class="form-select" asp-items="ViewBag.CourseId">
+                        <option value="">-- Select Task --</option>
+                    </select>
+                    <span asp-validation-for="CourseId" class="text-danger"></span>
+                </div>
+
+                <!-- Submit & Back Buttons -->
+                <div class="d-flex justify-content-end mt-4">
+                    <input type="submit" value="Create" class="btn btn-primary me-2" />
+                    <a asp-action="Index" class="btn btn-danger">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#image-input').change(function () {
+                var input = this;
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#preview').attr('src', e.target.result).removeClass('d-none');
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                } else {
+                    $('#preview').addClass('d-none');
+                }
+            });
+        });
+    </script>
+}

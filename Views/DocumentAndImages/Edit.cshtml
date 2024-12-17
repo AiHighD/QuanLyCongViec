@@ -1,0 +1,106 @@
+@model CourseManagement.ViewModels.DocAndImageViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="text-center text-primary">Edit</h1>
+
+<h4 class="text-center">Document And Image</h4>
+<hr />
+<div class="row justify-content-center">
+    <div class="col-md-9">
+        <form asp-action="Edit" class="border p-4 rounded bg-light shadow">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Images" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="form-label fw-bold"></label>
+                <input asp-for="Name" class="form-control bg-white" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Documents" class="form-label fw-bold"></label>
+                <input asp-for="Documents" class="form-control bg-white" />
+                <span asp-validation-for="Documents" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Image" class="img-fluid"></label>
+                <input asp-for="Image" type="file" class="img-fluid" id="image-input" onchange="previewImage(event)"
+                    accept="image/*" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+
+            <div class="image-preview my-2">
+                @if (!string.IsNullOrEmpty(Model.Images))
+                {
+                    <img id="preview" width="50%" class="img-fluid" src="@Model.Images" alt="Preview" />
+                }
+                else
+                {
+                    <img id="preview" width="50%" class="img-fluid d-none" src="" alt="Preview" />
+                }
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CourseId" class="control-label"></label>
+                <select asp-for="CourseId" class="form-select bg-white" asp-items="ViewBag.CourseId">
+                    <option value="">-- Select Task --</option>
+                </select>
+            </div>
+
+
+
+            <div class="d-flex justify-content-between mt-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-danger">Back to List</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#image-input').change(function () {
+                var input = this;
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#preview').attr('src', e.target.result).removeClass('d-none');
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                } else {
+                    $('#preview').addClass('d-none');
+                }
+            });
+
+            // Kiểm tra giá trị của Model.Images
+            var imagePath = "@Model.Images";
+            if (imagePath == null || imagePath.trim() === "") {
+                $('#preview').addClass('d-none');
+            }
+        });
+    </script>
+}

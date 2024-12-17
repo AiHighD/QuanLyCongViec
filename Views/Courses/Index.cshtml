@@ -1,0 +1,106 @@
+@model PaginatedList<CourseViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>TASK</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary btn-sm">
+        <i class="fas fa-plus"></i> Create New
+    </a>
+</p>
+
+
+
+<form asp-action="Index">
+    <div class="d-flex">
+        <input class="form-control" placeholder="Search..." value="@ViewData["CurrentFilter"]" type="text"
+            autocomplete="off" name="SearchString" />
+    </div>
+</form>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]"
+                    asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-light btn-sm">
+                    @Html.DisplayNameFor(model => model[0].Name)
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["TopicSortParm"]"
+                    asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-light btn-sm">
+                    @Html.DisplayNameFor(model => model[0].Topic)
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["StartTimeSortParm"]"
+                    asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-light btn-sm">
+                    @Html.DisplayNameFor(model => model[0].StartTime)
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["EndTimeSortParm"]"
+                    asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-light btn-sm">
+                @Html.DisplayNameFor(model => model[0].EndTime)
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["StatusSortParm"]"
+                    asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-light btn-sm">
+                @Html.DisplayNameFor(model => model[0].Status)
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Topic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<div class="d-flex justify-content-between mt-4">
+    <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-pageNumber="@(Model.PageIndex - 1)"
+        asp-route-currentFilter="@ViewData["CurrentFilter"]"
+        class="btn btn-outline-secondary @(!Model.HasPreviousPage ? "disabled" : "")">
+        Previous
+    </a>
+    <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-pageNumber="@(Model.PageIndex + 1)"
+        asp-route-currentFilter="@ViewData["CurrentFilter"]"
+        class="btn btn-outline-secondary @(!Model.HasNextPage ? "disabled" : "")">
+        Next
+    </a>
+</div>

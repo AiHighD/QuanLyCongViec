@@ -1,0 +1,70 @@
+@model CourseManagement.ViewModels.CourseViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 class="text-center text-primary">Task Details</h1>
+<hr />
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="border p-4 rounded bg-light shadow">
+
+                    <!-- Name -->
+                    <div class="form-group mb-3">
+                        <label class="form-label fw-bold">@Html.DisplayNameFor(model => model.Name)</label>
+                        <div class="form-control bg-white">
+                            @Html.DisplayFor(model => model.Name)
+                        </div>
+                    </div>
+
+                    <!-- Topic -->
+                    <div class="form-group mb-3">
+                        <label class="form-label fw-bold">@Html.DisplayNameFor(model => model.Topic)</label>
+                        <div class="form-control bg-white">
+                            @Html.DisplayFor(model => model.Topic)
+                        </div>
+                    </div>
+
+                    <!-- StartTime -->
+                    <div class="form-group mb-3">
+                        <label class="form-label fw-bold">@Html.DisplayNameFor(model => model.StartTime)</label>
+                        <div class="form-control bg-white">
+                            @Html.DisplayFor(model => model.StartTime)
+                        </div>
+                    </div>
+
+                    <!-- EndTime -->
+                    <div class="form-group mb-3">
+                        <label class="form-label fw-bold">@Html.DisplayNameFor(model => model.EndTime)</label>
+                        <div class="form-control bg-white">
+                            @Html.DisplayFor(model => model.EndTime)
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="form-group mb-3">
+                        <label class="form-label fw-bold">@Html.DisplayNameFor(model => model.Status)</label>
+                        <div class="form-control bg-white">
+                            @Html.DisplayFor(model => model.Status)
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary me-2">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a asp-action="Index" class="btn btn-danger">
+                            <i class="fas fa-arrow-left"></i> Back to List
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

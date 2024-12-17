@@ -1,0 +1,75 @@
+@model CourseManagement.ViewModels.CourseViewModel
+
+@{
+    ViewData["Title"] = "Edit Task";
+}
+
+<h1 class="text-center text-primary">Edit</h1>
+
+<h4 class="text-center">Task</h4>
+<hr />
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="Edit" class="border p-4 rounded bg-light shadow">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <!-- Hidden field for Id -->
+                    <input type="hidden" asp-for="Id" />
+
+                    <!-- Name -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Name" class="form-label fw-bold"></label>
+                        <input asp-for="Name" class="form-control bg-white" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <!-- Topic -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Topic" class="form-label fw-bold"></label>
+                        <input asp-for="Topic" class="form-control bg-white" />
+                        <span asp-validation-for="Topic" class="text-danger"></span>
+                    </div>
+
+                    <!-- StartTime -->
+                    <div class="form-group mb-3">
+                        <label asp-for="StartTime" class="form-label fw-bold"></label>
+                        <input asp-for="StartTime" class="form-control" type="datetime-local" />
+                        <span asp-validation-for="StartTime" class="text-danger"></span>
+                    </div>
+
+                    <!-- EndTime -->
+                    <div class="form-group mb-3">
+                        <label asp-for="EndTime" class="form-label fw-bold"></label>
+                        <input asp-for="EndTime" class="form-control" type="datetime-local" />
+                        <span asp-validation-for="EndTime" class="text-danger"></span>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Status" class="form-label"></label>
+                        <select asp-for="Status" class="form-select bg-white">
+                            <option value="">Choose Status</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-between">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <a asp-action="Index" class="btn btn-danger">Back to List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
